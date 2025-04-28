@@ -16,18 +16,26 @@
       padding: 40px;
       border-radius: 10px;
       box-shadow: 0 0 15px rgba(0,0,0,0.1);
-      max-width: 800px;
+      max-width: 900px;
       margin: auto;
     }
     h1 {
-      margin-bottom: 40px;
+      margin-bottom: 30px;
     }
     .question-block {
       margin-bottom: 40px;
       padding: 20px;
-      background-color: #f0f0f0;
       border-radius: 10px;
       text-align: left;
+      color: #333;
+    }
+    .blue { background-color: #d0ebff; }
+    .yellow { background-color: #fff4cf; }
+    .pink { background-color: #ffe0f0; }
+    .question-block img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-bottom: 15px;
     }
     button {
       display: block;
@@ -86,6 +94,7 @@ const quiz = [
   {
     question: "Jakie zwierzęta słyszysz?",
     correct: 0,
+    image: "https://cdn.pixabay.com/photo/2016/11/18/16/19/farm-1836465_1280.jpg",
     answers: [
       { text: "Ptaki, konie, krowy", instruction: "Wyjdź z pomieszczenia" },
       { text: "Koguty, owce, słonie", instruction: "Wyjrzyj przez okno" },
@@ -95,6 +104,7 @@ const quiz = [
   {
     question: "Usłyszysz stary telefon. Ile razy zadzwoni?",
     correct: 1,
+    image: "https://cdn.pixabay.com/photo/2016/11/29/09/32/telephone-1867124_1280.jpg",
     answers: [
       { text: "Raz", instruction: "Skręć w lewo" },
       { text: "Dwa", instruction: "Skręć w prawo" },
@@ -104,6 +114,7 @@ const quiz = [
   {
     question: "W jakim kierunku jedzie pociąg?",
     correct: 0,
+    image: "https://cdn.pixabay.com/photo/2015/11/07/11/42/train-1030757_1280.jpg",
     answers: [
       { text: "Z lewej do prawej", instruction: "Wjedź na 4 piętro" },
       { text: "Z prawej do lewej", instruction: "Wjedź na 2 piętro" },
@@ -113,6 +124,7 @@ const quiz = [
   {
     question: "Ułóż kolejność słyszanych dźwięków:",
     correct: 2,
+    image: "https://cdn.pixabay.com/photo/2017/08/06/00/02/people-2581913_1280.jpg",
     answers: [
       { text: "Pociąg, klaskanie, zegar z kukułką, śmiech ludzi", instruction: "Jesteś na miejscu" },
       { text: "Pociąg, klaskanie, zegar z kukułką, śmiech ludzi", instruction: "Jesteś na miejscu" },
@@ -122,6 +134,7 @@ const quiz = [
   {
     question: "Do jakiego gatunku filmowego możesz przyporządkować dwa fragmenty muzyczne?",
     correct: 1,
+    image: "https://cdn.pixabay.com/photo/2017/01/20/00/30/cowboy-1993656_1280.jpg",
     answers: [
       { text: "Komedia romantyczna", instruction: "Poszukaj schodów" },
       { text: "Western", instruction: "Udaj się do windy" },
@@ -134,9 +147,14 @@ function buildQuiz() {
   const quizForm = document.getElementById('quiz-form');
   quizForm.innerHTML = '';
   quiz.forEach((q, qIndex) => {
+    const colors = ['blue', 'yellow', 'pink'];
+    const colorClass = colors[qIndex % colors.length];
     const questionDiv = document.createElement('div');
-    questionDiv.classList.add('question-block');
-    questionDiv.innerHTML = `<h3>${q.question}</h3>`;
+    questionDiv.classList.add('question-block', colorClass);
+    questionDiv.innerHTML = `
+      <img src="${q.image}" alt="Pytanie ${qIndex + 1}">
+      <h3>${q.question}</h3>
+    `;
     q.answers.forEach((answer, aIndex) => {
       const label = document.createElement('label');
       label.innerHTML = `
@@ -165,11 +183,11 @@ function submitQuiz() {
       const selectedIndex = parseInt(selected.value);
       if (selectedIndex === q.correct) {
         selected.parentElement.classList.add('correct');
-        instructions += q.answers[selectedIndex].instruction + "<br>";
       } else {
         selected.parentElement.classList.add('incorrect');
         allCorrect = false;
       }
+      instructions += q.answers[selectedIndex].instruction + "<br>";
     } else {
       allCorrect = false;
     }
@@ -204,4 +222,5 @@ buildQuiz();
 
 </body>
 </html>
+
 
