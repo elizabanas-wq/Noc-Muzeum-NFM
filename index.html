@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -17,7 +16,7 @@
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      max-width: 600px;
+      max-width: 800px;
       margin: auto;
     }
     button {
@@ -35,9 +34,31 @@
     button:hover {
       background-color: #45a049;
     }
+    .correct {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .incorrect {
+      background-color: #f44336;
+      color: white;
+    }
     #result {
       margin-top: 20px;
+      font-size: 1.5rem;
+      line-height: 2;
+    }
+    .retry-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #2196F3;
+      color: white;
       font-size: 1.2rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .retry-btn:hover {
+      background-color: #1976D2;
     }
   </style>
 </head>
@@ -45,8 +66,8 @@
 
 <div id="quiz-box">
   <h1>Czy masz ucho do muzyki?</h1>
-  <div id="question"></div>
-  <div id="answers"></div>
+  <form id="quiz-form"></form>
+  <button onclick="submitQuiz()">Zakończ quiz</button>
   <div id="result"></div>
 </div>
 
@@ -54,6 +75,7 @@
 const quiz = [
   {
     question: "Jakie zwierzęta słyszysz?",
+    correct: 0, // poprawna: A
     answers: [
       { text: "Ptaki, konie, krowy", instruction: "Wyjdź z pomieszczenia" },
       { text: "Koguty, owce, słonie", instruction: "Wyjrzyj przez okno" },
@@ -62,6 +84,7 @@ const quiz = [
   },
   {
     question: "Usłyszysz stary telefon. Ile razy zadzwoni?",
+    correct: 1, // poprawna: B
     answers: [
       { text: "Raz", instruction: "Skręć w lewo" },
       { text: "Dwa", instruction: "Skręć w prawo" },
@@ -70,69 +93,91 @@ const quiz = [
   },
   {
     question: "W jakim kierunku jedzie pociąg?",
+    correct: 0, // poprawna: A
     answers: [
-      { text: "Z lewej do prawej", instruction: "Udaj się do windy" },
-      { text: "Z prawej do lewej", instruction: "Poszukaj schodów" },
-      { text: "Na wprost", instruction: "Idź na wprost" }
+      { text: "Z lewej do prawej", instruction: "Wjedź na 4 piętro" },
+      { text: "Z prawej do lewej", instruction: "Wjedź na 2 piętro" },
+      { text: "Na wprost", instruction: "Wjedź na 3 piętro" }
     ]
   },
   {
     question: "Ułóż kolejność słyszanych dźwięków:",
+    correct: 2, // poprawna: C
     answers: [
-      { text: "Pociąg, klaskanie, zegar z kukułką, śmiech ludzi", instruction: "Wjedź na 2 piętro" },
-      { text: "Pociąg, klaskanie, zegar z kukułką, śmiech ludzi", instruction: "Wjedź na 3 piętro" },
-      { text: "Pociąg, śmiech ludzi, zegar z kukułką, klaskanie", instruction: "Wjedź na 4 piętro" }
+      { text: "Pociąg, klaskanie, zegar z kukułką, śmiech ludzi", instruction: "Jesteś na miejscu" },
+      { text: "Pociąg, klaskanie, zegar z kukułką, śmiech ludzi", instruction: "Jesteś na miejscu" },
+      { text: "Pociąg, śmiech ludzi, zegar z kukułką, klaskanie", instruction: "Jesteś na miejscu" }
     ]
   },
   {
     question: "Do jakiego gatunku filmowego możesz przyporządkować dwa fragmenty muzyczne?",
+    correct: 1, // poprawna: B
     answers: [
-      { text: "Komedia romantyczna", instruction: "Skręć w lewo – jesteś na miejscu!" },
-      { text: "Western", instruction: "Skręć w prawo – jesteś na miejscu!" },
-      { text: "Fantasy", instruction: "Idź na wprost – jesteś na miejscu!" }
+      { text: "Komedia romantyczna", instruction: "Poszukaj schodów" },
+      { text: "Western", instruction: "Udaj się do windy" },
+      { text: "Fantasy", instruction: "Idź na wprost" }
     ]
   }
 ];
 
-let currentQuestion = 0;
-let resultInstructions = [];
-
-function showQuestion() {
-  const questionElement = document.getElementById('question');
-  const answersElement = document.getElementById('answers');
-  questionElement.innerHTML = quiz[currentQuestion].question;
-  answersElement.innerHTML = '';
-
-  quiz[currentQuestion].answers.forEach((answer, index) => {
-    const button = document.createElement('button');
-    button.innerText = answer.text;
-    button.onclick = () => selectAnswer(answer);
-    answersElement.appendChild(button);
+function buildQuiz() {
+  const quizForm = document.getElementById('quiz-form');
+  quizForm.innerHTML = '';
+  quiz.forEach((q, qIndex) => {
+    const questionDiv = document.createElement('div');
+    questionDiv.innerHTML = `<h3>${q.question}</h3>`;
+    q.answers.forEach((answer, aIndex) => {
+      const label = document.createElement('label');
+      label.innerHTML = `
+        <input type="radio" name="question${qIndex}" value="${aIndex}">
+        ${answer.text}
+      `;
+      label.style.display = 'block';
+      label.style.margin = '5px 0';
+      questionDiv.appendChild(label);
+    });
+    quizForm.appendChild(questionDiv);
   });
 }
 
-function selectAnswer(answer) {
-  resultInstructions.push(`Pytanie ${currentQuestion + 1}: ${answer.instruction}`);
-  currentQuestion++;
-
-  if (currentQuestion < quiz.length) {
-    showQuestion();
-  } else {
-    showResult();
-  }
-}
-
-function showResult() {
-  const questionElement = document.getElementById('question');
-  const answersElement = document.getElementById('answers');
+function submitQuiz() {
   const resultElement = document.getElementById('result');
+  const quizForm = document.getElementById('quiz-form');
+  const inputs = quizForm.querySelectorAll('input[type=radio]:checked');
+  
+  let allCorrect = true;
+  let instructions = '';
 
-  questionElement.innerHTML = "Twoja muzyczna instrukcja:";
-  answersElement.innerHTML = '';
-  resultElement.innerHTML = resultInstructions.join('<br>');
+  quiz.forEach((q, qIndex) => {
+    const selected = quizForm.querySelector(`input[name="question${qIndex}"]:checked`);
+    const labels = quizForm.querySelectorAll(`input[name="question${qIndex}"]`);
+
+    if (selected) {
+      const selectedIndex = parseInt(selected.value);
+      if (selectedIndex === q.correct) {
+        selected.parentElement.classList.add('correct');
+        instructions += q.answers[selectedIndex].instruction + "<br>";
+      } else {
+        selected.parentElement.classList.add('incorrect');
+        labels[q.correct].parentElement.classList.add('correct');
+        allCorrect = false;
+      }
+    } else {
+      allCorrect = false;
+    }
+  });
+
+  resultElement.innerHTML = `
+    <div style="margin-top:20px;">${instructions}</div>
+    ${allCorrect ? "<div style='margin-top:20px; font-weight:bold;'>Gratulacje! Podążaj za instrukcją, a trafisz do prawdziwego Warsztatu kompozytora!</div>" : "<button class='retry-btn' onclick='restartQuiz()'>Spróbuj jeszcze raz</button>"}
+  `;
 }
 
-showQuestion();
+function restartQuiz() {
+  location.reload();
+}
+
+buildQuiz();
 </script>
 
 </body>
