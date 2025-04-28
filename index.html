@@ -13,17 +13,27 @@
     }
     #quiz-box {
       background: white;
-      padding: 20px;
+      padding: 40px;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
       max-width: 800px;
       margin: auto;
+    }
+    h1 {
+      margin-bottom: 40px;
+    }
+    .question-block {
+      margin-bottom: 40px;
+      padding: 20px;
+      background-color: #f0f0f0;
+      border-radius: 10px;
+      text-align: left;
     }
     button {
       display: block;
       width: 80%;
-      margin: 10px auto;
-      padding: 10px;
+      margin: 20px auto;
+      padding: 12px;
       font-size: 1rem;
       border: none;
       background-color: #4CAF50;
@@ -43,7 +53,7 @@
       color: white;
     }
     #result {
-      margin-top: 20px;
+      margin-top: 30px;
       font-size: 1.5rem;
       line-height: 2;
     }
@@ -67,7 +77,7 @@
 <div id="quiz-box">
   <h1>Czy masz ucho do muzyki?</h1>
   <form id="quiz-form"></form>
-  <button onclick="submitQuiz()">Zakończ quiz</button>
+  <button type="button" onclick="submitQuiz()">Zakończ quiz</button>
   <div id="result"></div>
 </div>
 
@@ -75,7 +85,7 @@
 const quiz = [
   {
     question: "Jakie zwierzęta słyszysz?",
-    correct: 0, // poprawna: A
+    correct: 0,
     answers: [
       { text: "Ptaki, konie, krowy", instruction: "Wyjdź z pomieszczenia" },
       { text: "Koguty, owce, słonie", instruction: "Wyjrzyj przez okno" },
@@ -84,7 +94,7 @@ const quiz = [
   },
   {
     question: "Usłyszysz stary telefon. Ile razy zadzwoni?",
-    correct: 1, // poprawna: B
+    correct: 1,
     answers: [
       { text: "Raz", instruction: "Skręć w lewo" },
       { text: "Dwa", instruction: "Skręć w prawo" },
@@ -93,7 +103,7 @@ const quiz = [
   },
   {
     question: "W jakim kierunku jedzie pociąg?",
-    correct: 0, // poprawna: A
+    correct: 0,
     answers: [
       { text: "Z lewej do prawej", instruction: "Wjedź na 4 piętro" },
       { text: "Z prawej do lewej", instruction: "Wjedź na 2 piętro" },
@@ -102,7 +112,7 @@ const quiz = [
   },
   {
     question: "Ułóż kolejność słyszanych dźwięków:",
-    correct: 2, // poprawna: C
+    correct: 2,
     answers: [
       { text: "Pociąg, klaskanie, zegar z kukułką, śmiech ludzi", instruction: "Jesteś na miejscu" },
       { text: "Pociąg, klaskanie, zegar z kukułką, śmiech ludzi", instruction: "Jesteś na miejscu" },
@@ -111,7 +121,7 @@ const quiz = [
   },
   {
     question: "Do jakiego gatunku filmowego możesz przyporządkować dwa fragmenty muzyczne?",
-    correct: 1, // poprawna: B
+    correct: 1,
     answers: [
       { text: "Komedia romantyczna", instruction: "Poszukaj schodów" },
       { text: "Western", instruction: "Udaj się do windy" },
@@ -125,6 +135,7 @@ function buildQuiz() {
   quizForm.innerHTML = '';
   quiz.forEach((q, qIndex) => {
     const questionDiv = document.createElement('div');
+    questionDiv.classList.add('question-block');
     questionDiv.innerHTML = `<h3>${q.question}</h3>`;
     q.answers.forEach((answer, aIndex) => {
       const label = document.createElement('label');
@@ -150,8 +161,6 @@ function submitQuiz() {
 
   quiz.forEach((q, qIndex) => {
     const selected = quizForm.querySelector(`input[name="question${qIndex}"]:checked`);
-    const labels = quizForm.querySelectorAll(`input[name="question${qIndex}"]`);
-
     if (selected) {
       const selectedIndex = parseInt(selected.value);
       if (selectedIndex === q.correct) {
@@ -159,7 +168,6 @@ function submitQuiz() {
         instructions += q.answers[selectedIndex].instruction + "<br>";
       } else {
         selected.parentElement.classList.add('incorrect');
-        labels[q.correct].parentElement.classList.add('correct');
         allCorrect = false;
       }
     } else {
@@ -167,10 +175,24 @@ function submitQuiz() {
     }
   });
 
-  resultElement.innerHTML = `
-    <div style="margin-top:20px;">${instructions}</div>
-    ${allCorrect ? "<div style='margin-top:20px; font-weight:bold;'>Gratulacje! Podążaj za instrukcją, a trafisz do prawdziwego Warsztatu kompozytora!</div>" : "<button class='retry-btn' onclick='restartQuiz()'>Spróbuj jeszcze raz</button>"}
-  `;
+  if (inputs.length < quiz.length) {
+    alert('Proszę odpowiedzieć na wszystkie pytania!');
+    return;
+  }
+
+  if (allCorrect) {
+    resultElement.innerHTML = `
+      <div style="margin-top:20px;">${instructions}</div>
+      <div style="margin-top:30px; font-weight:bold; font-size:1.8rem;">Gratulacje! Koniec testu 🎉</div>
+      <div style="margin-top:10px;">Test uruchomi się ponownie za 5 sekund...</div>
+    `;
+    setTimeout(() => { restartQuiz(); }, 5000);
+  } else {
+    resultElement.innerHTML = `
+      <div style="margin-top:20px;">${instructions}</div>
+      <button class="retry-btn" onclick="restartQuiz()">Spróbuj jeszcze raz</button>
+    `;
+  }
 }
 
 function restartQuiz() {
@@ -182,3 +204,4 @@ buildQuiz();
 
 </body>
 </html>
+
