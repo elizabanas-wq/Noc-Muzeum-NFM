@@ -42,7 +42,11 @@
     .yellow { background-color: #fff4cf; }
     .pink { background-color: #ffe0f0; }
     .question-block img {
-      max-width: 100%;
+      width: 100%;
+      max-height: 300px;
+      overflow: hidden;
+      object-fit: cover;
+      object-position: center -200px;
       border-radius: 10px;
       margin-bottom: 15px;
     }
@@ -94,13 +98,13 @@
 <body>
 
 <div id="banner">
-  <img src="Noc Muzeow .jpg" alt="Noc Muzeów 2024">
+  <img src="./assets/banner.jpg" alt="Noc Muzeów 2024">
 </div>
 
 <div id="quiz-box">
   <h1>Czy masz ucho do muzyki?</h1>
   <form id="quiz-form"></form>
-  <button type="button" onclick="submitQuiz()">Zakończ quiz</button>
+  <button id="submit-btn" type="button" onclick="submitQuiz()">Zakończ quiz</button>
   <div id="result"></div>
 </div>
 
@@ -109,7 +113,7 @@ const quiz = [
   {
     question: "Jakie zwierzęta słyszysz?",
     correct: 0,
-    image: "https://cdn.pixabay.com/photo/2016/11/18/16/19/farm-1836465_1280.jpg",
+    image: "./assets/eliza1.jpg",
     answers: [
       { text: "Ptaki, konie, krowy", instruction: "Wyjdź z pomieszczenia" },
       { text: "Koguty, owce, słonie", instruction: "Wyjrzyj przez okno" },
@@ -119,7 +123,7 @@ const quiz = [
   {
     question: "Usłyszysz stary telefon. Ile razy zadzwoni?",
     correct: 1,
-    image: "https://cdn.pixabay.com/photo/2016/11/29/09/32/telephone-1867124_1280.jpg",
+    image: "./assets/eliza2.png",
     answers: [
       { text: "Raz", instruction: "Skręć w lewo" },
       { text: "Dwa", instruction: "Skręć w prawo" },
@@ -129,7 +133,7 @@ const quiz = [
   {
     question: "W jakim kierunku jedzie pociąg?",
     correct: 0,
-    image: "https://cdn.pixabay.com/photo/2015/11/07/11/42/train-1030757_1280.jpg",
+    image: "./assets/eliza3.jpg",
     answers: [
       { text: "Z lewej do prawej", instruction: "Wjedź na 4 piętro" },
       { text: "Z prawej do lewej", instruction: "Wjedź na 2 piętro" },
@@ -139,7 +143,7 @@ const quiz = [
   {
     question: "Ułóż kolejność słyszanych dźwięków:",
     correct: 2,
-    image: "https://cdn.pixabay.com/photo/2017/08/06/00/02/people-2581913_1280.jpg",
+    image: "./assets/eliza4.jpg",
     answers: [
       { text: "Pociąg, klaskanie, zegar z kukułką, śmiech ludzi", instruction: "Jesteś na miejscu" },
       { text: "Pociąg, klaskanie, zegar z kukułką, śmiech ludzi", instruction: "Jesteś na miejscu" },
@@ -149,7 +153,7 @@ const quiz = [
   {
     question: "Do jakiego gatunku filmowego możesz przyporządkować dwa fragmenty muzyczne?",
     correct: 1,
-    image: "https://cdn.pixabay.com/photo/2017/01/20/00/30/cowboy-1993656_1280.jpg",
+    image: "./assets/eliza5.jpg",
     answers: [
       { text: "Komedia romantyczna", instruction: "Poszukaj schodów" },
       { text: "Western", instruction: "Udaj się do windy" },
@@ -157,6 +161,7 @@ const quiz = [
     ]
   }
 ];
+
 
 function buildQuiz() {
   const quizForm = document.getElementById('quiz-form');
@@ -188,6 +193,7 @@ function submitQuiz() {
   const resultElement = document.getElementById('result');
   const quizForm = document.getElementById('quiz-form');
   const inputs = quizForm.querySelectorAll('input[type=radio]:checked');
+  const submitBtn = document.getElementById('submit-btn');
   
   let allCorrect = true;
   let instructions = '';
@@ -212,6 +218,8 @@ function submitQuiz() {
     alert('Proszę odpowiedzieć na wszystkie pytania!');
     return;
   }
+
+  submitBtn.style.display = 'none';
 
   if (allCorrect) {
     resultElement.innerHTML = `
