@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Czy masz ucho do muzyki?</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      padding: 20px;
+      text-align: center;
+    }
+    #quiz-box {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+    button {
+      display: block;
+      width: 80%;
+      margin: 10px auto;
+      padding: 10px;
+      font-size: 1rem;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+
+<div id="quiz-box">
+  <h1>Czy masz ucho do muzyki?</h1>
+  <div id="question"></div>
+  <div id="answers"></div>
+  <div id="result"></div>
+</div>
+
+<script>
+const quiz = [
+  {
+    question: "Jakie zwierzęta słyszysz?",
+    answers: [
+      { text: "Ptaki, konie, krowy", instruction: "Wyjdź z pomieszczenia" },
+      { text: "Koguty, owce, słonie", instruction: "Wyjrzyj przez okno" },
+      { text: "Kozy, świnie, psy", instruction: "Zostań w pomieszczeniu" }
+    ]
+  },
+  {
+    question: "Usłyszysz stary telefon. Ile razy zadzwoni?",
+    answers: [
+      { text: "Raz", instruction: "Skręć w lewo" },
+      { text: "Dwa", instruction: "Skręć w prawo" },
+      { text: "Trzy", instruction: "Idź na wprost" }
+    ]
+  },
+  {
+    question: "W jakim kierunku jedzie pociąg?",
+    answers: [
+      { text: "Z lewej do prawej", instruction: "Udaj się do windy" },
+      { text: "Z prawej do lewej", instruction: "Poszukaj schodów" },
+      { text: "Na wprost", instruction: "Idź na wprost" }
+    ]
+  },
+  {
+    question: "Ułóż kolejność słyszanych dźwięków:",
+    answers: [
+      { text: "Pociąg, klaskanie, zegar z kukułką, śmiech ludzi", instruction: "Wjedź na 2 piętro" },
+      { text: "Pociąg, klaskanie, zegar z kukułką, śmiech ludzi", instruction: "Wjedź na 3 piętro" },
+      { text: "Pociąg, śmiech ludzi, zegar z kukułką, klaskanie", instruction: "Wjedź na 4 piętro" }
+    ]
+  },
+  {
+    question: "Do jakiego gatunku filmowego możesz przyporządkować dwa fragmenty muzyczne?",
+    answers: [
+      { text: "Komedia romantyczna", instruction: "Skręć w lewo – jesteś na miejscu!" },
+      { text: "Western", instruction: "Skręć w prawo – jesteś na miejscu!" },
+      { text: "Fantasy", instruction: "Idź na wprost – jesteś na miejscu!" }
+    ]
+  }
+];
+
+let currentQuestion = 0;
+let resultInstructions = [];
+
+function showQuestion() {
+  const questionElement = document.getElementById('question');
+  const answersElement = document.getElementById('answers');
+  questionElement.innerHTML = quiz[currentQuestion].question;
+  answersElement.innerHTML = '';
+
+  quiz[currentQuestion].answers.forEach((answer, index) => {
+    const button = document.createElement('button');
+    button.innerText = answer.text;
+    button.onclick = () => selectAnswer(answer);
+    answersElement.appendChild(button);
+  });
+}
+
+function selectAnswer(answer) {
+  resultInstructions.push(`Pytanie ${currentQuestion + 1}: ${answer.instruction}`);
+  currentQuestion++;
+
+  if (currentQuestion < quiz.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  const questionElement = document.getElementById('question');
+  const answersElement = document.getElementById('answers');
+  const resultElement = document.getElementById('result');
+
+  questionElement.innerHTML = "Twoja muzyczna instrukcja:";
+  answersElement.innerHTML = '';
+  resultElement.innerHTML = resultInstructions.join('<br>');
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>
