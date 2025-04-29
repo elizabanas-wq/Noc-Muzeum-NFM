@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -7,7 +8,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #0B3B8C; /* granatowe tło */
+      background-color: #0B3B8C;
       padding: 20px;
       text-align: center;
       color: white;
@@ -22,10 +23,15 @@
       margin: 30px auto;
     }
     h1 {
-      font-size: 2.5rem;
+      font-size: 3rem;
       font-weight: bold;
+      margin-bottom: 10px;
+      color: #0B3B8C;
+    }
+    #quiz-box p {
+      font-size: 1.3rem;
       margin-bottom: 30px;
-      color: #0B3B8C; /* granatowy tekst */
+      color: #444;
     }
     #banner img {
       max-width: 100%;
@@ -58,7 +64,7 @@
       font-size: 1.2rem;
       font-weight: bold;
       border: none;
-      background-color: #FF6B00; /* pomarańczowy */
+      background-color: #FF6B00;
       color: white;
       border-radius: 5px;
       cursor: pointer;
@@ -103,9 +109,10 @@
 
 <div id="quiz-box">
   <h1>Czy masz ucho do muzyki?</h1>
+  <p>Noc Muzeów w NFM</p>
   <form id="quiz-form"></form>
-  <button id="submit-btn" type="button" onclick="submitQuiz()">Zakończ quiz</button>
-  <div id="result"></div>
+  <button id="end-btn" type="button" onclick="submitQuiz()">Zakończ quiz</button>
+  <div id="result" style="text-align: left;"></div>
 </div>
 
 <script>
@@ -189,11 +196,13 @@ function buildQuiz() {
   });
 }
 
+
 function submitQuiz() {
+  document.getElementById('end-btn').style.display = 'none';
+
   const resultElement = document.getElementById('result');
   const quizForm = document.getElementById('quiz-form');
   const inputs = quizForm.querySelectorAll('input[type=radio]:checked');
-  const submitBtn = document.getElementById('submit-btn');
   
   let allCorrect = true;
   let instructions = '';
@@ -218,19 +227,24 @@ function submitQuiz() {
     alert('Proszę odpowiedzieć na wszystkie pytania!');
     return;
   }
-
-  submitBtn.style.display = 'none';
+  
+  const instructionBlock = `
+    <div style="margin-top:20px;">
+      <strong style="font-size: 1.6rem; color: #0B3B8C;">Mapa</strong><br><br>
+      ${instructions}
+    </div>
+  `;
 
   if (allCorrect) {
     resultElement.innerHTML = `
-      <div style="margin-top:20px;">${instructions}</div>
+      ${instructionBlock}
       <div style="margin-top:30px; font-weight:bold; font-size:1.8rem;">Gratulacje! Koniec testu 🎉</div>
       <div style="margin-top:10px;">Test uruchomi się ponownie za 5 sekund...</div>
     `;
     setTimeout(() => { restartQuiz(); }, 5000);
   } else {
     resultElement.innerHTML = `
-      <div style="margin-top:20px;">${instructions}</div>
+      ${instructionBlock}
       <button class="retry-btn" onclick="restartQuiz()">Spróbuj jeszcze raz</button>
     `;
   }
