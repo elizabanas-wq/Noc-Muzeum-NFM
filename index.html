@@ -4,34 +4,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.cdnfonts.com/css/publica-play" rel="stylesheet">
   <title>Czy masz ucho do muzyki?</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #0B3B8C;
-      padding: 20px;
+      background-color: #4001a6;
+      padding: 0;
+      margin: 0;
       text-align: center;
       color: white;
+
+      background: url('./assets/banner2025.jpg') no-repeat center 0 fixed;
+      background-size: 100% auto;
     }
+
+    body, button, input, select, textarea {
+      font-family: 'Publica Play', Arial, sans-serif;
+    }
+
     #quiz-box {
       background: white;
       color: #333;
       padding: 40px;
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(0,0,0,0.3);
-      max-width: 900px;
-      margin: 30px auto;
+      max-width: 500px;
+      margin: 30px 0 30px auto;
+      margin-right: clamp(0px, 8%, 120px);
+
+      @media screen and (max-width: 768px) {
+        margin: 0 auto;
+        border-radius: 0;
+      }
     }
     h1 {
       font-size: 3rem;
       font-weight: bold;
       margin-bottom: 10px;
-      color: #0B3B8C;
+      margin-top: 0;
+      color: #4001a6;
     }
     #quiz-box p {
       font-size: 1.3rem;
       margin-bottom: 30px;
       color: #444;
+    }
+    #quiz-box h3 {
+      margin-top: 0;
     }
     #banner img {
       max-width: 100%;
@@ -44,9 +63,9 @@
       border-radius: 10px;
       text-align: left;
     }
-    .blue { background-color: #d0ebff; }
-    .yellow { background-color: #fff4cf; }
-    .pink { background-color: #ffe0f0; }
+    .blue { background-color: #EBF1ED; }
+    .yellow { background-color: #EBC39E; }
+    .pink { background-color: #eac5c0; }
     .question-block img {
       width: 100%;
       max-height: 300px;
@@ -64,14 +83,14 @@
       font-size: 1.2rem;
       font-weight: bold;
       border: none;
-      background-color: #FF6B00;
+      background-color: #D76554;
       color: white;
       border-radius: 5px;
       cursor: pointer;
       transition: background 0.3s;
     }
     button:hover {
-      background-color: #e65c00;
+      background-color: #D76554;
     }
     .correct {
       background-color: #4CAF50;
@@ -99,13 +118,18 @@
     .retry-btn:hover {
       background-color: #1976D2;
     }
+
+    label:hover {
+      background-color: #00000011;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
 
-<div id="banner">
-  <img src="./assets/banner.jpg" alt="Noc Muzeów 2024">
-</div>
+<!-- <div id="banner">
+  <img src="./assets/banner2025.jpg" alt="Noc Muzeów 2024">
+</div> -->
 
 <div id="quiz-box">
   <h1>Czy masz ucho do muzyki?</h1>
@@ -120,7 +144,6 @@ const quiz = [
   {
     question: "Jakie zwierzęta słyszysz?",
     correct: 0,
-    image: "./assets/eliza1.jpg",
     answers: [
       { text: "Ptaki, konie, krowy", instruction: "Wyjdź z pomieszczenia" },
       { text: "Koguty, owce, słonie", instruction: "Wyjrzyj przez okno" },
@@ -129,8 +152,7 @@ const quiz = [
   },
   {
     question: "Usłyszysz stary telefon. Ile razy zadzwoni?",
-    correct: 1,
-    image: "./assets/eliza2.png",
+    correct: 1,  
     answers: [
       { text: "Raz", instruction: "Skręć w lewo" },
       { text: "Dwa", instruction: "Skręć w prawo" },
@@ -140,7 +162,6 @@ const quiz = [
   {
     question: "W jakim kierunku jedzie pociąg?",
     correct: 0,
-    image: "./assets/eliza3.jpg",
     answers: [
       { text: "Z lewej do prawej", instruction: "Wjedź na 4 piętro" },
       { text: "Z prawej do lewej", instruction: "Wjedź na 2 piętro" },
@@ -150,7 +171,6 @@ const quiz = [
   {
     question: "Ułóż kolejność słyszanych dźwięków:",
     correct: 2,
-    image: "./assets/eliza4.jpg",
     answers: [
       { text: "Pociąg, klaskanie, zegar z kukułką, śmiech ludzi", instruction: "Jesteś na miejscu" },
       { text: "Pociąg, klaskanie, zegar z kukułką, śmiech ludzi", instruction: "Jesteś na miejscu" },
@@ -159,8 +179,7 @@ const quiz = [
   },
   {
     question: "Do jakiego gatunku filmowego możesz przyporządkować dwa fragmenty muzyczne?",
-    correct: 1,
-    image: "./assets/eliza5.jpg",
+    correct: 1,  
     answers: [
       { text: "Komedia romantyczna", instruction: "Poszukaj schodów" },
       { text: "Western", instruction: "Udaj się do windy" },
@@ -179,7 +198,6 @@ function buildQuiz() {
     const questionDiv = document.createElement('div');
     questionDiv.classList.add('question-block', colorClass);
     questionDiv.innerHTML = `
-      <img src="${q.image}" alt="Pytanie ${qIndex + 1}">
       <h3>${q.question}</h3>
     `;
     q.answers.forEach((answer, aIndex) => {
@@ -190,6 +208,7 @@ function buildQuiz() {
       `;
       label.style.display = 'block';
       label.style.margin = '5px 0';
+      label.style.padding = '4px 0';
       questionDiv.appendChild(label);
     });
     quizForm.appendChild(questionDiv);
@@ -198,7 +217,7 @@ function buildQuiz() {
 
 
 function submitQuiz() {
-  document.getElementById('end-btn').style.display = 'none';
+  
 
   const resultElement = document.getElementById('result');
   const quizForm = document.getElementById('quiz-form');
@@ -206,6 +225,11 @@ function submitQuiz() {
   
   let allCorrect = true;
   let instructions = '';
+
+  if (inputs.length < quiz.length) {
+    alert('Proszę odpowiedzieć na wszystkie pytania!');
+    return;
+  }
 
   quiz.forEach((q, qIndex) => {
     const selected = quizForm.querySelector(`input[name="question${qIndex}"]:checked`);
@@ -223,14 +247,11 @@ function submitQuiz() {
     }
   });
 
-  if (inputs.length < quiz.length) {
-    alert('Proszę odpowiedzieć na wszystkie pytania!');
-    return;
-  }
+  document.getElementById('end-btn').style.display = 'none';
   
   const instructionBlock = `
     <div style="margin-top:20px;">
-      <strong style="font-size: 1.6rem; color: #0B3B8C;">Mapa</strong><br><br>
+      <h2 style="font-size: 2rem; color: #0B3B8C; margin-top: 0; margin-bottom: 0;">Mapa:</h2>
       ${instructions}
     </div>
   `;
@@ -241,7 +262,6 @@ function submitQuiz() {
       <div style="margin-top:30px; font-weight:bold; font-size:1.8rem;">Gratulacje! Koniec testu 🎉</div>
       <div style="margin-top:10px;">Test uruchomi się ponownie za 5 sekund...</div>
     `;
-    setTimeout(() => { restartQuiz(); }, 5000);
   } else {
     resultElement.innerHTML = `
       ${instructionBlock}
