@@ -259,7 +259,10 @@ function submitQuiz() {
   if (allCorrect) {
     resultElement.innerHTML = `
       ${instructionBlock}
-      <div style="margin-top:30px; font-weight:bold; font-size:1.8rem;">Gratulacje! Koniec testu 🎉</div>
+      <div style="margin-top:30px; font-weight:bold; font-size:1.8rem;">
+        Gratulacje! Koniec testu 🎉 <br/>
+        Stosuj się do powyżej instrukcji i odkryj Warsztat kompozytora!
+      </div>
     `;
   } else {
     resultElement.innerHTML = `
