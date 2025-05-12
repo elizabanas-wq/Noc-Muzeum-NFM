@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.cdnfonts.com/css/publica-play" rel="stylesheet">
+  <link rel="stylesheet" href="../static/style.css">
+  <title>Czy masz ucho do muzyki?</title>
+</head>
+<body>
+
+<div id="quiz-box">
+  <a class="back-link" href="../index.html">Powrót do menu</a>
+  <h1>Czy masz ucho do muzyki?</h1>
+  <p>Odpowiedz na pytania, Poprawne odpowiedzi wskażą drogę do następnego muzycznego
+    pokoju – Warsztatu kompozytora!</p>
+  <form id="quiz-form"></form>
+  <button id="end-btn" type="button" onclick="submitQuiz()">Zakończ quiz</button>
+  <div id="result" style="text-align: left;"></div>
+</div>
+
+<script>
+const quiz = [
+  {
+    "code": "MCUzQSUzQXd5amQlQzUlQkElMjB6JTIwcG9taWVzemN6ZW5pYSUzQSUzQXVuZGVmaW5lZA==",
+    "question": "Jakie zwierzątka słychać przez cały czas?",
+    "answers": [
+      {
+        "text": "Ptaszki"
+      },
+      {
+        "text": "Koguty"
+      },
+      {
+        "text": "Świnki"
+      }
+    ]
+  },
+  {
+    "code": "MSUzQSUzQXNrciVDNCU5OSVDNCU4NyUyMHclMjBwcmF3byUzQSUzQXVuZGVmaW5lZA==",
+    "question": "Ile razy dzwoni stary telefon?",
+    "answers": [
+      {
+        "text": "1 raz"
+      },
+      {
+        "text": "2 razy"
+      },
+      {
+        "text": "3 razy"
+      }
+    ]
+  },
+  {
+    "code": "MCUzQSUzQXpuYWpkJUM1JUJBJTIwd2luZCVDNCU5OSUzQSUzQXVuZGVmaW5lZA==",
+    "question": "Co jedzie i wydaje głośne dźwięki?",
+    "answers": [
+      {
+        "text": "Pociąg"
+      },
+      {
+        "text": "Samolot"
+      },
+      {
+        "text": "Tramwaj"
+      }
+    ]
+  },
+  {
+    "code": "MiUzQSUzQXdqZWR6JTIwbmElMjA0JTIwcGklQzQlOTl0cm8lM0ElM0F1bmRlZmluZWQ=",
+    "question": "Co słychać po kukułce z zegara?",
+    "answers": [
+      {
+        "text": "Głos ludzi"
+      },
+      {
+        "text": "Wiertarka"
+      },
+      {
+        "text": "Klaskanie"
+      }
+    ]
+  },
+  {
+    "code": "MSUzQSUzQXNrciVDNCU5OSVDNCU4NyUyMHclMjBwcmF3byUzQSUzQXVuZGVmaW5lZA==",
+    "question": "Jaki instrument gra melodię z dzikiego zachodu?",
+    "answers": [
+      {
+        "text": "Fortepian"
+      },
+      {
+        "text": "Mała harmonijka"
+      },
+      {
+        "text": "Trąbka"
+      }
+    ]
+  }
+]
+
+</script>
+<script src="../static/script.js"></script>
+
+</body>
+</html>
