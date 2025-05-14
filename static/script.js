@@ -1,5 +1,9 @@
 const { submitQuiz, restartQuiz } = (function quizApp() {
 
+  if (typeof imagePath === 'undefined') {
+    imagePath = null;
+  }
+
   function buildQuiz() {
     const quizForm = document.getElementById('quiz-form');
     quizForm.innerHTML = '';
@@ -11,16 +15,32 @@ const { submitQuiz, restartQuiz } = (function quizApp() {
       questionDiv.innerHTML = `
         <h3>${q.question}</h3>
       `;
+
+      const answersDiv = document.createElement('div');
+      answersDiv.classList.add('answers');
+
+      if (imagePath) {
+        answersDiv.classList.add('answers-image');
+      }
+
+      questionDiv.appendChild(answersDiv);
+
       q.answers.forEach((answer, aIndex) => {
+        const labelContent = imagePath ? `<img class="answer-image" src=${imagePath + `q${qIndex}_a${aIndex}.jpg`} alt=${answer.text} /><div class="answer-image-desc">${answer.text}</div>` : answer.text;
+
         const label = document.createElement('label');
+        label.classList.add('answer-label');
+
+        if (imagePath) {
+          label.classList.add('answer-image-label');
+        }
+
         label.innerHTML = `
           <input type="radio" name="question${qIndex}" value="${aIndex}">
-          ${answer.text}
+          ${labelContent}
         `;
-        label.style.display = 'block';
-        label.style.margin = '5px 0';
-        label.style.padding = '4px 0';
-        questionDiv.appendChild(label);
+        
+        answersDiv.appendChild(label);
       });
       quizForm.appendChild(questionDiv);
     });
@@ -125,7 +145,9 @@ const { submitQuiz, restartQuiz } = (function quizApp() {
 
   return {
     submitQuiz,
-    restartQuiz
+    restartQuiz,
+    encodeInstruction,
+    decodeInstruction
   };
 
 })();
