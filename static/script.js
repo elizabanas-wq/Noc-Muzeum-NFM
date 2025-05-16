@@ -98,6 +98,9 @@ const { submitQuiz, restartQuiz } = (function quizApp() {
       `;
     } else {
       resultElement.innerHTML = `
+        <p style="line-height: 1.35;">
+          <b>Niektóre odpowiedzi są błędne. Proszę spróbować ponownie.</b> ❌
+        </p>
         <button class="retry-btn" onclick="restartQuiz()">Spróbuj jeszcze raz</button>
       `;
     }
